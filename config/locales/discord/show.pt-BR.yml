@@ -1,0 +1,14 @@
+---
+pt-BR:
+  discord:
+    show:
+      found:
+        title: 'Detalhes da facção:'
+        description: |
+          %{name}
+
+          <Hierarquia>
+          %{progression_roles_formatted}
+      not_found:
+        title: 'Não encontrado'
+        description: 'Esse cargo não parece pertencer a nenhuma facção'

@@ -1,0 +1,8 @@
+---
+pt-BR:
+  discord:
+    common:
+      confirmation_title: 'Essa é a vontade do Imperador?'
+      permission_error:
+        title: 'O Deus Máquina não nos ajudou dessa vez'
+        description: 'Para realizar essa operação, preciso da benção de um primarch (permissões de admin)'

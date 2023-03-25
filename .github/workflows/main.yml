@@ -1,0 +1,48 @@
+name: Rails Pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  workflow:
+    runs-on: ubuntu-latest
+    container:
+      image: ruby:3.0.0
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_PASSWORD: 1234
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Bundle install
+        run: |
+          bundle install --jobs 4 --retry 3
+
+      - name: Rspec
+        env:
+          DISCORD_TOKEN: mytoken
+          POSTGRES_HOST: postgres
+          POSTGRES_USER: postgres
+        run: |
+          bundle exec rails db:prepare
+          bundle exec rspec
+
+      - name: Rubocop
+        run: bundle exec rubocop -c .rubocop.yml
+
+      # - name: Audit
+      #   run: |
+      #     gem install bundler-audit
+      #     bundle-audit --update

@@ -1,0 +1,13 @@
+---
+pt-BR:
+  discord:
+    promote:
+      success:
+        title: 'Entre as forças que batalham entres si pela galáxia, o nome [%{name}] se espalha'
+        description: 'Para o temor das forças do Caos, ou para o deleite dos 4 deuses, <@%{member_id}> deixou de ser <@&%{old_role_id}> e se tornou <@&%{new_role_id}>. O grupo conhecido como <@&%{main_role_id}> parece estar ficando mais forte...'
+      already_max:
+        title: 'Acho que sua percepção está lhe falhando'
+        description: '<@%{member_id}> já tem poder demais, até mesmo eu consigo notar (cargo máximo). Não há nenhuma promoção disponível.'
+      only_main:
+        title: 'Este ser não possuia cargo'
+        description: 'Mesmo que <@%{member_id}> fosse <@&%{main_role_id}>, nenhum cargo de hierarquia foi encontrado, então adicionei <@&%{new_role_id}>'

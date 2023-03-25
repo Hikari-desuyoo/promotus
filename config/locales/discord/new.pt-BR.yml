@@ -1,0 +1,14 @@
+---
+pt-BR:
+  discord:
+    new:
+      confirmation:
+        ask: |
+          Você está prestes a criar uma hierarquia para %{main_role}, com a seguinte progressão:
+          %{progression_roles_formatted}
+          Procede?
+        accepted: 'O Deus Máquina autorizou o sucesso dessa operação.'
+        denied: 'Precisa repensar suas decisões? Tudo bem.'
+      invalid_roles:
+        title: 'Recebi informações inesperadas'
+        description: 'O que eu esperava era algo no modelo ">new @a @b @c". Não se esqueça dos espaços!'

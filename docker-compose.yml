@@ -1,0 +1,33 @@
+services:
+  web:
+    command: bash -c 'bundle install && bundle exec rails s -b 0.0.0.0 -p 3000'
+    image: ruby:3.0.0
+    env_file: .env
+    ports:
+      - 3006:3006
+    volumes:
+      - .:/app
+      - rubygems:/usr/local/bundle
+    working_dir: /app
+    depends_on:
+      - db
+  discord:
+    command: bin/discord
+    image: ruby:3.0.0
+    env_file: .env
+    volumes:
+      - .:/app
+      - rubygems:/usr/local/bundle
+    working_dir: /app
+    depends_on:
+      - db
+      - web
+  db:
+    image: postgres
+    env_file: .env
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  rubygems:
+  db:

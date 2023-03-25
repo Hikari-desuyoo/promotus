@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+ENV['RAILS_ENV'] ||= 'development'
+require_relative '../config/environment'
+Discord::Setup.new.call
