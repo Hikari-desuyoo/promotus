@@ -1,5 +1,6 @@
 services:
   web:
+    platform: linux/x86_64
     command: bash -c 'bundle install && bundle exec rails s -b 0.0.0.0 -p 3000'
     image: ruby:3.0.0
     env_file: .env
