@@ -1,5 +1,6 @@
 class Role < ApplicationRecord
   belongs_to :faction
+  has_many :side_roles, dependent: :destroy
 
   def self.fetch_discord_id(role_arg)
     role_arg[3..-2]

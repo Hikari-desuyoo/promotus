@@ -6,47 +6,40 @@ module Discord::Events
     def set
       on_command('p', 'promote', 'promover') do |event|
         next unless admin?(event)
-        discord_user = clean_discord_user(event)
-        guild = fetch_guild(event)
-        target_member = fetch_target_member(event)
-        role = fetch_role(guild, target_member)
-        update_roles(event, role, target_member)
-
-      rescue Discordrb::Errors::NoPermission
-        event.send_embed('', view_permission_error)
+        member = fetch_member_arg(event)
+        current_role = fetch_role(event, member)
+        promote(event, current_role, member)
       end
     end
 
     private
 
-    def update_roles(event, role, target_member)
-      next_role = while_connected do
-        role.next_role
-      end
-      discordrb_role = fetch_discordrb_role(event, role)
-      main_role = fetch_discordrb_role(event, role.main_role)
+    def promote(event, old_role, member)
+      next_role = while_connected { old_role.next_role }
+      main_role = old_role.main_role
 
-      unless next_role
-        event.send_embed(
-          '',
-          view_already_max(target_member, discordrb_role, main_role)
-        )
-        return
+      case update_role_case(next_role)
+      when :normal
+        operate_on_roles(event, member, remove: old_role, add: next_role)
+        embed = view_success(member, old_role, next_role, main_role)
+      when :already_max
+        embed = view_already_max(member, old_role, main_role)
+      when :first_one
+        operate_on_roles(event, member, add: next_role)
+        embed = view_first_one(member, next_role, main_role)
       end
-      discordrb_next_role = fetch_discordrb_role(event, next_role)
-      target_member.remove_role(discordrb_role) unless role.main?
-      target_member.add_role(discordrb_next_role)
-      if role.main?
-        event.send_embed(
-          '',
-          view_only_main(target_member, discordrb_next_role, main_role)
-        )
-        return
-      end
-      event.send_embed(
-        '',
-        view_success(target_member, discordrb_role, discordrb_next_role, main_role)
-      )
+      event.send_embed('', embed)
+    end
+
+    def operate_on_roles(event, member, **operations)
+      member.remove_role(fetch_discordrb_role(event, operations[:remove])) if operations[:remove]
+      member.add_role(fetch_discordrb_role(event, operations[:add])) if operations[:add]
+    end
+
+    def update_role_case(next_role)
+      return :already_max unless next_role
+      return :first_one if next_role.faction_degree == 1
+      :normal
     end
 
     def fetch_discordrb_role(event, role)
@@ -55,22 +48,17 @@ module Discord::Events
       end
     end
 
-    def fetch_guild(event)
-      while_connected do
-        Guild.find_by(discord_id: event.server.id)
-      end
-    end
-
-    def fetch_target_member(event)
+    def fetch_member_arg(event)
       target_member = event.server.members.detect do |member|
         user = event.message.mentions.first
         member.id == user.id
       end
     end
 
-    def fetch_role(guild, target_member)
+    def fetch_role(event, member)
       while_connected do
-        role_ids = target_member.roles.map { |r| r.id }
+        guild = Guild.find_by(discord_id: event.server.id)
+        role_ids = member.roles.map { |r| r.id }
         factions = guild ? guild.factions : []
         role = nil
         factions.each do |faction|

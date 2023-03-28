@@ -8,6 +8,6 @@ pt-BR:
       already_max:
         title: 'Acho que sua percepção está lhe falhando'
         description: '<@%{member_id}> já tem poder demais, até mesmo eu consigo notar (cargo máximo). Não há nenhuma promoção disponível.'
-      only_main:
+      first_one:
         title: 'Este ser não possuia cargo'
         description: 'Mesmo que <@%{member_id}> fosse <@&%{main_role_id}>, nenhum cargo de hierarquia foi encontrado, então adicionei <@&%{new_role_id}>'

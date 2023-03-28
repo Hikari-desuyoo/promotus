@@ -7,9 +7,9 @@ module Discord::Views::Promote
       description: I18n.t(
         'discord.promote.success.description',
         member_id: member.id,
-        old_role_id: old_role.id,
-        new_role_id: new_role.id,
-        main_role_id: main_role.id
+        old_role_id: old_role.discord_id,
+        new_role_id: new_role.discord_id,
+        main_role_id: main_role.discord_id
       )
     }
   end
@@ -21,19 +21,19 @@ module Discord::Views::Promote
         'discord.promote.already_max.description',
         member_id: member.id,
         role_id: role.id,
-        main_role_id: main_role.id
+        main_role_id: main_role.discord_id
       )
     }
   end
 
-  def view_only_main(member, new_role, main_role)
+  def view_first_one(member, new_role, main_role)
     {
-      title: I18n.t('discord.promote.only_main.title'),
+      title: I18n.t('discord.promote.first_one.title'),
       description: I18n.t(
-        'discord.promote.only_main.description',
+        'discord.promote.first_one.description',
         member_id: member.id,
-        new_role_id: new_role.id,
-        main_role_id: main_role.id
+        new_role_id: new_role.discord_id,
+        main_role_id: main_role.discord_id
       )
     }
   end
