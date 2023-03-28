@@ -7,8 +7,12 @@ pt-BR:
         description: |
           %{name}
 
-          <Hierarquia>
+          `=====HIERARQUIA=====`
           %{progression_roles_formatted}
+          ||```py
+          Comando gerador:
+          %{command}
+          ```||
       not_found:
         title: 'Não encontrado'
         description: 'Esse cargo não parece pertencer a nenhuma facção'

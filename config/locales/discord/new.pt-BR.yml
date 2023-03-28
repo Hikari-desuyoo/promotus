@@ -7,6 +7,10 @@ pt-BR:
           Você está prestes a criar uma hierarquia para %{main_role}, com a seguinte progressão:
           %{progression_roles_formatted}
           Procede?
+          ||```py
+          Comando gerador:
+          %{command}
+          ```||
         accepted: 'O Deus Máquina autorizou o sucesso dessa operação.'
         denied: 'Precisa repensar suas decisões? Tudo bem.'
       invalid_roles:

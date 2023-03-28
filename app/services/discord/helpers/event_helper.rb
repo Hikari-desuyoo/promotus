@@ -9,6 +9,31 @@ module Discord::Helpers::EventHelper
     return false
   end
 
+  def operate_on_roles(event, member, **operations)
+    if operations[:remove]
+      role = operations[:remove]
+      [role, *role.side_roles].each do |role|
+        member.remove_role(fetch_discordrb_role(event, role))
+      end
+    end
+    member.add_role(fetch_discordrb_role(event, operations[:add])) if operations[:add]
+  rescue Discordrb::Errors::NoPermission
+    event.respond '[FATAL ERROR] Discordrb::Errors::NoPermission' # probably wont happen so this is more of a log
+  end
+
+  def fetch_discordrb_role(event, role)
+    event.server.roles.detect do |server_role|
+      server_role.id == role.discord_id
+    end
+  end
+
+  def fetch_member_arg(event)
+    target_member = event.server.members.detect do |member|
+      user = event.message.mentions.first
+      member.id == user.id
+    end
+  end
+
   def react(message, emoji_str)
     message.react(emoji_str)
   end

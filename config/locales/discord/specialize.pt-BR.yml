@@ -1,0 +1,10 @@
+---
+pt-BR:
+  discord:
+    specialize:
+      success:
+        title: '[%{name}] decidiu seu caminho!'
+        description: '<@%{member_id}>, ao receber o cargo de <@&%{role_id}>, resolveu servir <@&%{main_role_id}> como <@&%{side_role_id}>.'
+      no_side_role:
+        title: 'Se enganou?'
+        description: '<@%{member_id}> não tem nenhuma especialização disponível com esse nome... Será que a facção está corretamente cadastrada?'

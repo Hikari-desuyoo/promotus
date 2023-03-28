@@ -6,10 +6,16 @@ module Discord::Views::New::Confirmation
       formatted_set = role_set.map do |role_id|
         "<@&#{role_id}>"
       end
-      formatted_string = "#{i+1} > #{formatted_set.first}"
-      formatted_string << " (#{formatted_set[1..].join(' ')})" if role_set.count > 1
+      formatted_string = "#{i+1} `>` #{formatted_set.first}"
+      formatted_string << (role_set.count > 1 ? "`>>`#{formatted_set[1..].join(' ')}" : "`||`")
       formatted_string
     end.join("\n")
+
+    command = "#{ENV['DISCORD_PREFIX']}new " + role_sets.map do |role_set|
+      role_set.map do |role_id|
+        "<@&#{role_id}>"
+      end.join
+    end.join(' ')
 
     main_role = "<@&#{role_sets.first.first}>"
     {
@@ -17,7 +23,8 @@ module Discord::Views::New::Confirmation
       description: I18n.t(
         'discord.new.confirmation.ask',
         main_role: main_role,
-        progression_roles_formatted: progression_roles_formatted
+        progression_roles_formatted: progression_roles_formatted,
+        command: command
       ),
     }
   end

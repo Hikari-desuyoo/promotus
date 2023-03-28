@@ -2,15 +2,23 @@ module Discord::Views::Promote
   private
 
   def view_success(member, old_role, new_role, main_role)
+    side_roles_formatted = new_role.side_roles.map do |side_role|
+      side_role.formatted
+    end.join(', ')
+
+    description = I18n.t(
+      'discord.promote.success.description',
+      member_id: member.id,
+      old_role_id: old_role.discord_id,
+      new_role_id: new_role.discord_id,
+      main_role_id: main_role.discord_id
+    ) + "\n"
+
+    description << I18n.t('discord.promote.success.side_role_text') + side_roles_formatted unless side_roles_formatted.blank?
+
     {
       title: I18n.t('discord.promote.success.title', name: member.name),
-      description: I18n.t(
-        'discord.promote.success.description',
-        member_id: member.id,
-        old_role_id: old_role.discord_id,
-        new_role_id: new_role.discord_id,
-        main_role_id: main_role.discord_id
-      )
+      description: description
     }
   end
 
@@ -34,6 +42,16 @@ module Discord::Views::Promote
         member_id: member.id,
         new_role_id: new_role.discord_id,
         main_role_id: main_role.discord_id
+      )
+    }
+  end
+
+  def view_no_role(member)
+    {
+      title: I18n.t('discord.promote.no_role.title'),
+      description: I18n.t(
+        'discord.promote.no_role.description',
+        member_id: member.id
       )
     }
   end

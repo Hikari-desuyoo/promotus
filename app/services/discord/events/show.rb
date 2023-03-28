@@ -4,6 +4,7 @@ module Discord::Events
 
     def set
       on_command('show', 's', 'ver', 'mostrar', 'v') do |event|
+        next unless admin?(event)
         discord_user = clean_discord_user(event)
         role = fetch_args(event).first
         faction = while_connected do
