@@ -19,16 +19,10 @@ db_connection = ActiveRecord::Base.connection_pool.pool_config.db_config
 RSpec.configure do |config|
   config.include DiscordTester::Syntax
   config.include FactoryBot::Syntax::Methods
-  config.include VnLoader
-  config.include ImageLoader
-  config.include DiscordHelper
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
-  config.after(:suite) do
-    FileUtils.rm_rf(ActiveStorage::Blob.service.root)
-  end
 end
 
 Shoulda::Matchers.configure do |config|

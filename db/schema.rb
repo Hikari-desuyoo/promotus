@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_28_005859) do
+ActiveRecord::Schema.define(version: 2023_05_03_180648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2023_03_28_005859) do
 
   create_table "factions", force: :cascade do |t|
     t.bigint "guild_id", null: false
+    t.bigint "title_role_id"
+    t.bigint "root_role_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["guild_id"], name: "index_factions_on_guild_id"
@@ -44,8 +46,16 @@ ActiveRecord::Schema.define(version: 2023_03_28_005859) do
     t.index ["guild_id"], name: "index_memberships_on_guild_id"
   end
 
+  create_table "role_branches", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.bigint "child_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "roles", force: :cascade do |t|
-    t.bigint "faction_id", null: false
+    t.bigint "faction_id"
+    t.string "name"
     t.bigint "discord_id"
     t.integer "faction_degree"
     t.datetime "created_at", precision: 6, null: false
@@ -53,17 +63,8 @@ ActiveRecord::Schema.define(version: 2023_03_28_005859) do
     t.index ["faction_id"], name: "index_roles_on_faction_id"
   end
 
-  create_table "side_roles", force: :cascade do |t|
-    t.bigint "discord_id"
-    t.bigint "role_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["role_id"], name: "index_side_roles_on_role_id"
-  end
-
   add_foreign_key "factions", "guilds"
   add_foreign_key "memberships", "discord_users"
   add_foreign_key "memberships", "guilds"
   add_foreign_key "roles", "factions"
-  add_foreign_key "side_roles", "roles"
 end

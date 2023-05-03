@@ -1,13 +1,20 @@
 class Faction < ApplicationRecord
   belongs_to :guild
-  has_many :roles, dependent: :destroy
-  has_many :side_roles, through: :roles
+  has_one :title_role, class_name: 'Role', presence: true
+  has_one :root_role, class_name: 'Role', presence: true
 
-  def main_role
-    roles.find_by(faction_degree: 0)
+  def formatted
+    final_text = "[#{title_role.name}]\n#{formatted_tree}"
   end
 
-  def progression_roles
-    roles.where("faction_degree > 0")
+  private
+
+  def formatted_tree
+    tree_string = ''
+    role = root_role
+    role.children.map.with_index do |child, i|
+      first = i == 0
+
+    end
   end
 end
