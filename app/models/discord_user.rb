@@ -1,6 +1,4 @@
 class DiscordUser < ApplicationRecord
-  has_many :memberships
-
   validates :discord_id, uniqueness: true
   validates :discord_id, presence: true
 

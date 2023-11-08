@@ -16,10 +16,9 @@ ActiveRecord::Schema.define(version: 2023_05_03_180648) do
   enable_extension "plpgsql"
 
   create_table "discord_users", force: :cascade do |t|
-    t.bigint "discord_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "name"
+    t.bigint "discord_id"
   end
 
   create_table "factions", force: :cascade do |t|
@@ -37,15 +36,6 @@ ActiveRecord::Schema.define(version: 2023_05_03_180648) do
     t.bigint "discord_id"
   end
 
-  create_table "memberships", force: :cascade do |t|
-    t.bigint "guild_id", null: false
-    t.bigint "discord_user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["discord_user_id"], name: "index_memberships_on_discord_user_id"
-    t.index ["guild_id"], name: "index_memberships_on_guild_id"
-  end
-
   create_table "role_branches", force: :cascade do |t|
     t.bigint "parent_id"
     t.bigint "child_id"
@@ -54,17 +44,10 @@ ActiveRecord::Schema.define(version: 2023_05_03_180648) do
   end
 
   create_table "roles", force: :cascade do |t|
-    t.bigint "faction_id"
-    t.string "name"
     t.bigint "discord_id"
-    t.integer "faction_degree"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["faction_id"], name: "index_roles_on_faction_id"
   end
 
   add_foreign_key "factions", "guilds"
-  add_foreign_key "memberships", "discord_users"
-  add_foreign_key "memberships", "guilds"
-  add_foreign_key "roles", "factions"
 end
